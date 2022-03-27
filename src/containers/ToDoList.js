@@ -8,17 +8,9 @@ import CategoryButtons from "./../components/CategoryButtons";
 import TitleAndInput from "./TitleAndInput";
 
 const ToDoList = (props) => {
-  /*  Checks if visibleList is undefined and if so, maps from the allList instead. 
+  /*  Checks if visibleList is undefined and if so, maps from the allList instead.
       This is done to avoid errors when the app first starts up.  */
-  const getList = () => {
-    let list = [];
-    if (!props.visibleList) {
-      list = props.allList;
-    } else {
-      list = props.visibleList;
-    }
-    return list;
-  };
+  const getList = () =>  props.visibleList || props.allList
 
   const { colorMode } = useColorMode();
 

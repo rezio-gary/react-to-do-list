@@ -1,50 +1,51 @@
-import * as actionTypes from "../store/actions";
+/* eslint-disable no-fallthrough */
+import type { Store } from './actions'
+import { Actions } from "./actions";
 
-const initialState = {
+const initialState: Store = {
   newTaskText: "",
   currentColumn: "all",
   allTaskList: [],
   visibleTaskList: [],
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: {type: Actions, [k: string]: any}) => {
   switch (action.type) {
-    case actionTypes.ENTER_NEW_TASK_TEXT:
+    case Actions.ENTER_NEW_TASK_TEXT:
       return {
         ...state,
         newTaskText: action.newText,
       };
-    case actionTypes.ADD_TASK:
+    case Actions.ADD_TASK:
       // add it to the allTaskList
-      if (state.newTaskText === undefined || state.newTaskText.length === 0) {
-        //do nothing
-      } else {
-        const newAllTaskList = state.allTaskList.concat({
-          key: new Date() + state.newTaskText + Math.random(),
-          id: new Date() + state.newTaskText + Math.random(),
-          text: state.newTaskText,
-          done: false,
-        });
-        // find out which column is currently visible and update visibleTaskList accordingly
-        let newVisTaskList = [];
-        if (state.currentColumn === "all") {
-          newVisTaskList = newAllTaskList;
-        } else if (state.currentColumn === "to do") {
-          newVisTaskList = newAllTaskList.filter((task) => !task.done);
-        } else if (state.currentColumn === "done") {
-          newVisTaskList = newAllTaskList.filter((task) => task.done);
-        } else {
-          newVisTaskList = newAllTaskList;
-        }
+      if (state.newTaskText === undefined || state.newTaskText.length === 0)
+        return
 
-        return {
-          ...state,
-          newTaskText: "",
-          allTaskList: newAllTaskList,
-          visibleTaskList: newVisTaskList,
-        };
+      const newAllTaskList = state.allTaskList.concat({
+        key: new Date() + state.newTaskText + Math.random(),
+        id: new Date() + state.newTaskText + Math.random(),
+        text: state.newTaskText,
+        done: false,
+      });
+      // find out which column is currently visible and update visibleTaskList accordingly
+      let newVisTaskList = [];
+      if (state.currentColumn === "all") {
+        newVisTaskList = newAllTaskList;
+      } else if (state.currentColumn === "to do") {
+        newVisTaskList = newAllTaskList.filter((task) => !task.done);
+      } else if (state.currentColumn === "done") {
+        newVisTaskList = newAllTaskList.filter((task) => task.done);
+      } else {
+        newVisTaskList = newAllTaskList;
       }
-    case actionTypes.DELETE_TASK:
+
+      return {
+        ...state,
+        newTaskText: "",
+        allTaskList: newAllTaskList,
+        visibleTaskList: newVisTaskList,
+      };
+    case Actions.DELETE_TASK:
       // remove it from the allTaskList
       const updatedTaskList = state.allTaskList.filter(
         (task) => task.id !== action.taskId
@@ -66,13 +67,13 @@ const reducer = (state = initialState, action) => {
         allTaskList: updatedTaskList,
         visibleTaskList: updatedVisibleTaskList,
       };
-    case actionTypes.CLICK_CHECKBOX:
+    case Actions.CLICK_CHECKBOX:
       // find the item in the list that matches the id given
       const item = state.allTaskList.find(
         (listItem) => listItem.id === action.taskId
       );
       // find the index of that item
-      const index = state.allTaskList.indexOf(item);
+      const index = state.allTaskList.indexOf(item!);
       // update the done property of the item to be opposite to what it was before in the allTaskList
       const newTaskList = [
         ...state.allTaskList.slice(0, index),
@@ -100,21 +101,21 @@ const reducer = (state = initialState, action) => {
         allTaskList: newTaskList,
         visibleTaskList: newVisibleTaskList,
       };
-    case actionTypes.CLICK_TO_DO:
+    case Actions.CLICK_TO_DO:
       const newToDoList = state.allTaskList.filter((task) => !task.done);
       return {
         ...state,
         currentColumn: "to do",
         visibleTaskList: newToDoList,
       };
-    case actionTypes.CLICK_DONE:
+    case Actions.CLICK_DONE:
       const newDoneList = state.allTaskList.filter((task) => task.done);
       return {
         ...state,
         currentColumn: "done",
         visibleTaskList: newDoneList,
       };
-    case actionTypes.CLICK_ALL:
+    case Actions.CLICK_ALL:
       return {
         ...state,
         currentColumn: "all",
