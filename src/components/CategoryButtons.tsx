@@ -1,11 +1,32 @@
 import React from "react";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 import { Button, Flex, useColorMode } from "@chakra-ui/core";
 import { FaListUl } from "react-icons/fa";
 
-import * as actionTypes from "./../store/actions";
+import {Actions, Store} from "../store/actions";
 
-const CategoryButtons = (props) => {
+
+const mapState = (state: Store) => ({
+  currentCol: state.currentColumn,
+  list: state.allTaskList,
+  visibleList: state.visibleTaskList,
+})
+
+const mapDispatch = {
+    onClickToDo: () => ({ type: Actions.CLICK_TO_DO }),
+    onClickDone: () => ({ type: Actions.CLICK_DONE }),
+    onClickAll: () => ({ type: Actions.CLICK_ALL }),
+}
+
+const connector = connect(mapState, mapDispatch)
+
+// The inferred type will look like:
+// {isOn: boolean, toggleOn: () => void}
+type PropsFromRedux = ConnectedProps<typeof connector>
+interface Props extends PropsFromRedux {
+}
+
+const CategoryButtons = ({currentCol,onClickToDo,onClickDone,onClickAll,}: Props) => {
   const { colorMode } = useColorMode();
   const bgColor = { light: "mauve.500", dark: "gray.600" };
   const selectedBgColor = { light: "violet.500", dark: "cyan.700" };
@@ -25,7 +46,7 @@ const CategoryButtons = (props) => {
     >
       <Button
         backgroundColor={
-          props.currentCol === "to do"
+          currentCol === "to do"
             ? selectedBgColor[colorMode]
             : bgColor[colorMode]
         }
@@ -34,16 +55,16 @@ const CategoryButtons = (props) => {
         margin={["2px 1px", "2px"]}
         fontSize={["xl", "lg", "lg", "md"]}
         leftIcon="calendar"
-        onClick={props.onClickToDo}
+        onClick={onClickToDo}
         _hover={{
           backgroundColor:
-            props.currentCol === "to do"
+            currentCol === "to do"
               ? selectedHoverColor[colorMode]
               : hoverColor[colorMode],
         }}
         _active={{
           backgroundColor:
-            props.currentCol === "to do"
+            currentCol === "to do"
               ? selectedActiveColor[colorMode]
               : activeColor[colorMode],
         }}
@@ -56,7 +77,7 @@ const CategoryButtons = (props) => {
       </Button>
       <Button
         backgroundColor={
-          props.currentCol === "done"
+          currentCol === "done"
             ? selectedBgColor[colorMode]
             : bgColor[colorMode]
         }
@@ -65,16 +86,16 @@ const CategoryButtons = (props) => {
         margin={["2px 1px", "2px"]}
         fontSize={["xl", "lg", "lg", "md"]}
         leftIcon="check-circle"
-        onClick={props.onClickDone}
+        onClick={onClickDone}
         _hover={{
           backgroundColor:
-            props.currentCol === "done"
+            currentCol === "done"
               ? selectedHoverColor[colorMode]
               : hoverColor[colorMode],
         }}
         _active={{
           backgroundColor:
-            props.currentCol === "done"
+            currentCol === "done"
               ? selectedActiveColor[colorMode]
               : activeColor[colorMode],
         }}
@@ -87,7 +108,7 @@ const CategoryButtons = (props) => {
       </Button>
       <Button
         backgroundColor={
-          props.currentCol === "all"
+          currentCol === "all"
             ? selectedBgColor[colorMode]
             : bgColor[colorMode]
         }
@@ -96,16 +117,16 @@ const CategoryButtons = (props) => {
         margin={["2px 1px", "2px"]}
         fontSize={["xl", "lg", "lg", "md"]}
         leftIcon={FaListUl}
-        onClick={props.onClickAll}
+        onClick={onClickAll}
         _hover={{
           backgroundColor:
-            props.currentCol === "all"
+            currentCol === "all"
               ? selectedHoverColor[colorMode]
               : hoverColor[colorMode],
         }}
         _active={{
           backgroundColor:
-            props.currentCol === "all"
+            currentCol === "all"
               ? selectedActiveColor[colorMode]
               : activeColor[colorMode],
         }}
@@ -120,20 +141,4 @@ const CategoryButtons = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    currentCol: state.currentColumn,
-    list: state.allTaskList,
-    visibleList: state.visibleTaskList,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onClickToDo: () => dispatch({ type: actionTypes.CLICK_TO_DO }),
-    onClickDone: () => dispatch({ type: actionTypes.CLICK_DONE }),
-    onClickAll: () => dispatch({ type: actionTypes.CLICK_ALL }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryButtons);
+export default connector(CategoryButtons);
