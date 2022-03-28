@@ -1,7 +1,7 @@
+import { Button, Flex, IconButton, useColorMode } from "@chakra-ui/core";
 import React from "react";
-import { IconButton, Button, Flex, useColorMode } from "@chakra-ui/core";
-import { GoMarkGithub } from "react-icons/go";
 import { FaHeart } from "react-icons/fa";
+import { GoMarkGithub } from "react-icons/go";
 
 const NavigationBar = () => {
   const { colorMode, toggleColorMode } = useColorMode();

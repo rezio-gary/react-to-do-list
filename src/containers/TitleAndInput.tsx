@@ -1,22 +1,24 @@
+import { Button, Flex, Input, Text, useColorMode } from "@chakra-ui/core";
 import React from "react";
-import { Text, Input, Button, Flex, useColorMode } from "@chakra-ui/core";
 import { connect, ConnectedProps } from "react-redux";
-
 import { Actions, Store } from "../store/actions";
 import { visibleSelector } from "../store/reducer";
 
-const mapState= (state: Store) => ({
+const mapState = (state: Store) => ({
   newText: state.newTaskText,
   allList: state.allTaskList,
-  visibleList: visibleSelector(state)
-})
-
-const mapDispatch= ({
-  onEnterNewTaskText: (text: string) =>({ type: Actions.ENTER_NEW_TASK_TEXT, newText: text }),
-  onAddTask: () => ({ type: Actions.ADD_TASK }),
+  visibleList: visibleSelector(state),
 });
 
-const connector = connect(mapState, mapDispatch)
+const mapDispatch = {
+  onEnterNewTaskText: (text: string) => ({
+    type: Actions.ENTER_NEW_TASK_TEXT,
+    newText: text,
+  }),
+  onAddTask: () => ({ type: Actions.ADD_TASK }),
+};
+
+const connector = connect(mapState, mapDispatch);
 
 interface Props extends ConnectedProps<typeof connector> {}
 
@@ -73,7 +75,9 @@ const TitleAndInput = (props: Props) => {
           position="relative"
           left="4px"
           value={props.newText}
-          onChange={(event) => props.onEnterNewTaskText(event.currentTarget.value)}
+          onChange={(event) =>
+            props.onEnterNewTaskText(event.currentTarget.value)
+          }
           onKeyPress={onKeyPress}
           _placeholder={{
             color: colorMode === "light" ? "gray.400" : "gray.500",
@@ -104,4 +108,4 @@ const TitleAndInput = (props: Props) => {
   );
 };
 
-export default connector(TitleAndInput)
+export default connector(TitleAndInput);

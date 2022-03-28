@@ -1,15 +1,13 @@
-import React from "react";
 import {
   Checkbox,
-  Text,
-  IconButton,
-  useColorMode,
   Flex,
+  IconButton,
+  Text,
+  useColorMode,
 } from "@chakra-ui/core";
+import React from "react";
 import { connect, ConnectedProps } from "react-redux";
-
 import { Actions, Store, TodoItem } from "../store/actions";
-
 
 const mapState = (state: Store) => {
   return {
@@ -17,18 +15,18 @@ const mapState = (state: Store) => {
   };
 };
 
-const mapDispatch = ({
-  onDeleteTask: (id: string) =>
-    ({ type: Actions.DELETE_TASK, taskId: id }),
-  onClickCheckbox: (id: string) =>
-    ({ type: Actions.CLICK_CHECKBOX, taskId: id }),
-})
+const mapDispatch = {
+  onDeleteTask: (id: string) => ({ type: Actions.DELETE_TASK, taskId: id }),
+  onClickCheckbox: (id: string) => ({
+    type: Actions.CLICK_CHECKBOX,
+    taskId: id,
+  }),
+};
 
-const connector = connect(mapState, mapDispatch)
+const connector = connect(mapState, mapDispatch);
 
 // type PropsFromRedux = ConnectedProps<typeof connector>
 interface Props extends TodoItem, ConnectedProps<typeof connector> {}
-
 
 const ListItem = (props: Props) => {
   const { colorMode } = useColorMode();

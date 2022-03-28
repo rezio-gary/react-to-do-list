@@ -1,32 +1,35 @@
-import React from "react";
-import { connect, ConnectedProps } from "react-redux";
 import { Button, Flex, useColorMode } from "@chakra-ui/core";
+import React from "react";
 import { FaListUl } from "react-icons/fa";
-
+import { connect, ConnectedProps } from "react-redux";
 import { Actions, Store } from "../store/actions";
 import { visibleSelector } from "../store/reducer";
-
 
 const mapState = (state: Store) => ({
   currentCol: state.currentColumn,
   list: state.allTaskList,
   visibleList: visibleSelector(state),
-})
+});
 
 const mapDispatch = {
-    onClickToDo: () => ({ type: Actions.CLICK_TO_DO }),
-    onClickDone: () => ({ type: Actions.CLICK_DONE }),
-    onClickAll: () => ({ type: Actions.CLICK_ALL }),
-}
+  onClickToDo: () => ({ type: Actions.CLICK_TO_DO }),
+  onClickDone: () => ({ type: Actions.CLICK_DONE }),
+  onClickAll: () => ({ type: Actions.CLICK_ALL }),
+};
 
-const connector = connect(mapState, mapDispatch)
+const connector = connect(mapState, mapDispatch);
 
 // The inferred type will look like:
 // {isOn: boolean, toggleOn: () => void}
 // type PropsFromRedux = ConnectedProps<typeof connector>
 interface Props extends ConnectedProps<typeof connector> {}
 
-const CategoryButtons = ({currentCol,onClickToDo,onClickDone,onClickAll,}: Props) => {
+const CategoryButtons = ({
+  currentCol,
+  onClickToDo,
+  onClickDone,
+  onClickAll,
+}: Props) => {
   const { colorMode } = useColorMode();
   const bgColor = { light: "mauve.500", dark: "gray.600" };
   const selectedBgColor = { light: "violet.500", dark: "cyan.700" };
@@ -108,9 +111,7 @@ const CategoryButtons = ({currentCol,onClickToDo,onClickDone,onClickAll,}: Props
       </Button>
       <Button
         backgroundColor={
-          currentCol === "all"
-            ? selectedBgColor[colorMode]
-            : bgColor[colorMode]
+          currentCol === "all" ? selectedBgColor[colorMode] : bgColor[colorMode]
         }
         color="white"
         width="33%"
