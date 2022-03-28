@@ -9,7 +9,7 @@ const initialState: Store = {
   visibleTaskList: [],
 };
 
-const reducer = (state = initialState, action: {type: Actions, [k: string]: any}) => {
+const reducer = (state = initialState, action: {type: Actions, newText: string, taskId: string}) => {
   switch (action.type) {
     case Actions.ENTER_NEW_TASK_TEXT:
       return {
