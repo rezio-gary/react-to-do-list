@@ -2,14 +2,13 @@ import React from "react";
 import { Text, Input, Button, Flex, useColorMode } from "@chakra-ui/core";
 import { connect, ConnectedProps } from "react-redux";
 
-import { Actions, Store, TodoItem } from "../store/actions";
-
-
+import { Actions, Store } from "../store/actions";
+import { visibleSelector } from "../store/reducer";
 
 const mapState= (state: Store) => ({
   newText: state.newTaskText,
   allList: state.allTaskList,
-  visibleList: state.visibleTaskList,
+  visibleList: visibleSelector(state)
 })
 
 const mapDispatch= ({

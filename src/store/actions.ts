@@ -12,7 +12,6 @@ export type Store = {
   newTaskText: string
   currentColumn: 'all' | 'to do' | 'done'
   allTaskList: TodoItem[]
-  visibleTaskList: TodoItem[]
 }
 
 export type TodoItem = {

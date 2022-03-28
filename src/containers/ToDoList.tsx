@@ -2,16 +2,16 @@ import React from "react";
 import { Text, Flex, useColorMode } from "@chakra-ui/core";
 import { connect, ConnectedProps } from "react-redux";
 
+import type { Store } from "../store/actions";
 import NavigationBar from "../components/NavigationBar";
 import ListItem from "../components/ListItem";
 import CategoryButtons from "../components/CategoryButtons";
 import TitleAndInput from "./TitleAndInput";
-import type { Store } from "../store/actions";
-
+import { visibleSelector } from "../store/reducer";
 
 const mapState = (state: Store) => ({
   allList: state.allTaskList,
-  visibleList: state.visibleTaskList,
+  visibleList: visibleSelector(state)
 });
 
 const connector = connect(mapState)

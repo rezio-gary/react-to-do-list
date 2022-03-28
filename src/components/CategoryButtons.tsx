@@ -4,12 +4,13 @@ import { Button, Flex, useColorMode } from "@chakra-ui/core";
 import { FaListUl } from "react-icons/fa";
 
 import { Actions, Store } from "../store/actions";
+import { visibleSelector } from "../store/reducer";
 
 
 const mapState = (state: Store) => ({
   currentCol: state.currentColumn,
   list: state.allTaskList,
-  visibleList: state.visibleTaskList,
+  visibleList: visibleSelector(state),
 })
 
 const mapDispatch = {
