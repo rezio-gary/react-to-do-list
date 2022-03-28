@@ -1,13 +1,24 @@
 import React from "react";
 import { Text, Flex, useColorMode } from "@chakra-ui/core";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 
-import NavigationBar from "./../components/NavigationBar";
-import ListItem from "./../components/ListItem";
-import CategoryButtons from "./../components/CategoryButtons";
+import NavigationBar from "../components/NavigationBar";
+import ListItem from "../components/ListItem";
+import CategoryButtons from "../components/CategoryButtons";
 import TitleAndInput from "./TitleAndInput";
+import type { Store } from "../store/actions";
 
-const ToDoList = (props) => {
+
+const mapState = (state: Store) => ({
+  allList: state.allTaskList,
+  visibleList: state.visibleTaskList,
+});
+
+const connector = connect(mapState)
+
+interface Props extends ConnectedProps<typeof connector> {}
+
+const ToDoList = (props: Props) => {
   /*  Checks if visibleList is undefined and if so, maps from the allList instead.
       This is done to avoid errors when the app first starts up.  */
   const getList = () =>  props.visibleList || props.allList
@@ -84,11 +95,4 @@ const ToDoList = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    allList: state.allTaskList,
-    visibleList: state.visibleTaskList,
-  };
-};
-
-export default connect(mapStateToProps)(ToDoList);
+export default connector(ToDoList);
