@@ -22,8 +22,8 @@ const connector = connect(mapState, mapDispatch)
 
 // The inferred type will look like:
 // {isOn: boolean, toggleOn: () => void}
-type PropsFromRedux = ConnectedProps<typeof connector>
-interface Props extends PropsFromRedux {}
+// type PropsFromRedux = ConnectedProps<typeof connector>
+interface Props extends ConnectedProps<typeof connector> {}
 
 const CategoryButtons = ({currentCol,onClickToDo,onClickDone,onClickAll,}: Props) => {
   const { colorMode } = useColorMode();

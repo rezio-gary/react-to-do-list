@@ -26,8 +26,8 @@ const mapDispatch = () =>( {
 
 const connector = connect(mapState, mapDispatch)
 
-type PropsFromRedux = ConnectedProps<typeof connector>
-interface Props extends PropsFromRedux, TodoItem {}
+// type PropsFromRedux = ConnectedProps<typeof connector>
+interface Props extends TodoItem, ConnectedProps<typeof connector> {}
 
 
 const ListItem = (props: Props) => {
