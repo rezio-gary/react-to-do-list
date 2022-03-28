@@ -105,4 +105,4 @@ const TitleAndInput = (props: Props) => {
   );
 };
 
-export default (TitleAndInput);
+export default connector(TitleAndInput)
