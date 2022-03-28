@@ -6,11 +6,31 @@ import {
   useColorMode,
   Flex,
 } from "@chakra-ui/core";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 
-import * as actionTypes from "./../store/actions";
+import { Actions, Store, TodoItem } from "../store/actions";
 
-const ListItem = (props) => {
+
+const mapState = (state: Store) => {
+  return {
+    list: state.allTaskList,
+  };
+};
+
+const mapDispatch = () =>( {
+  onDeleteTask: (id: string) =>
+    ({ type: Actions.DELETE_TASK, taskId: id }),
+  onClickCheckbox: (id: string) =>
+    ({ type: Actions.CLICK_CHECKBOX, taskId: id }),
+})
+
+const connector = connect(mapState, mapDispatch)
+
+type PropsFromRedux = ConnectedProps<typeof connector>
+interface Props extends PropsFromRedux, TodoItem {}
+
+
+const ListItem = (props: Props) => {
   const { colorMode } = useColorMode();
 
   const buttonColorModeStyling = {
@@ -80,19 +100,4 @@ const ListItem = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    list: state.allTaskList,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onDeleteTask: (id) =>
-      dispatch({ type: actionTypes.DELETE_TASK, taskId: id }),
-    onClickCheckbox: (id) =>
-      dispatch({ type: actionTypes.CLICK_CHECKBOX, taskId: id }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListItem);
+export default connector(ListItem);

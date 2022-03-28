@@ -3,7 +3,7 @@ import { connect, ConnectedProps } from "react-redux";
 import { Button, Flex, useColorMode } from "@chakra-ui/core";
 import { FaListUl } from "react-icons/fa";
 
-import {Actions, Store} from "../store/actions";
+import { Actions, Store } from "../store/actions";
 
 
 const mapState = (state: Store) => ({
@@ -23,8 +23,7 @@ const connector = connect(mapState, mapDispatch)
 // The inferred type will look like:
 // {isOn: boolean, toggleOn: () => void}
 type PropsFromRedux = ConnectedProps<typeof connector>
-interface Props extends PropsFromRedux {
-}
+interface Props extends PropsFromRedux {}
 
 const CategoryButtons = ({currentCol,onClickToDo,onClickDone,onClickAll,}: Props) => {
   const { colorMode } = useColorMode();
