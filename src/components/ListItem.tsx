@@ -17,7 +17,7 @@ const mapState = (state: Store) => {
   };
 };
 
-const mapDispatch = () =>( {
+const mapDispatch = ({
   onDeleteTask: (id: string) =>
     ({ type: Actions.DELETE_TASK, taskId: id }),
   onClickCheckbox: (id: string) =>
