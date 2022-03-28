@@ -23,7 +23,7 @@ const NavigationBar = () => {
       width="100%"
       padding={["2px", "6px"]}
       position="relative"
-      zIndex="999"
+      zIndex={999}
     >
       <Button
         backgroundColor={colorMode === "light" ? "violet.500" : "cyan.700"}
@@ -31,7 +31,7 @@ const NavigationBar = () => {
         leftIcon={colorMode === "light" ? "moon" : FaHeart}
         size="sm"
         marginLeft="auto"
-        zIndex="999"
+        zIndex={999}
         onClick={toggleColorMode}
         _hover={{
           backgroundColor: colorMode === "light" ? "violet.600" : "cyan.800",
@@ -52,7 +52,8 @@ const NavigationBar = () => {
         icon={GoMarkGithub}
         size="sm"
         marginLeft="6px"
-        zIndex="999"
+        zIndex={999}
+        aria-label=""
         onClick={() =>
           window.open("https://github.com/briannamcdonald/react-to-do-list")
         }
