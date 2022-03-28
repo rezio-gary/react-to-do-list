@@ -1,10 +1,27 @@
 import React from "react";
 import { Text, Input, Button, Flex, useColorMode } from "@chakra-ui/core";
-import { connect } from "react-redux";
+import { connect, ConnectedProps } from "react-redux";
 
-import * as actionTypes from "./../store/actions";
+import { Actions, Store, TodoItem } from "../store/actions";
 
-const TitleAndInput = (props) => {
+
+
+const mapState= (state: Store) => ({
+  newText: state.newTaskText,
+  allList: state.allTaskList,
+  visibleList: state.visibleTaskList,
+})
+
+const mapDispatch= ({
+  onEnterNewTaskText: (text: string) =>({ type: Actions.ENTER_NEW_TASK_TEXT, newText: text }),
+  onAddTask: () => ({ type: Actions.ADD_TASK }),
+});
+
+const connector = connect(mapState, mapDispatch)
+
+interface Props extends ConnectedProps<typeof connector> {}
+
+const TitleAndInput = (props: Props) => {
   const { colorMode } = useColorMode();
   const buttonColorModeStyling = {
     light: {
@@ -21,7 +38,7 @@ const TitleAndInput = (props) => {
     },
   };
 
-  const onKeyPress = (e) => {
+  const onKeyPress = (e: React.KeyboardEvent) => {
     if (e.which === 13) {
       props.onAddTask();
     }
@@ -57,7 +74,7 @@ const TitleAndInput = (props) => {
           position="relative"
           left="4px"
           value={props.newText}
-          onChange={(event) => props.onEnterNewTaskText(event.target.value)}
+          onChange={(event) => props.onEnterNewTaskText(event.currentTarget.value)}
           onKeyPress={onKeyPress}
           _placeholder={{
             color: colorMode === "light" ? "gray.400" : "gray.500",
@@ -88,20 +105,4 @@ const TitleAndInput = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    newText: state.newTaskText,
-    allList: state.allTaskList,
-    visibleList: state.visibleTaskList,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onEnterNewTaskText: (text) =>
-      dispatch({ type: actionTypes.ENTER_NEW_TASK_TEXT, newText: text }),
-    onAddTask: () => dispatch({ type: actionTypes.ADD_TASK }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TitleAndInput);
+export default (TitleAndInput);
